@@ -8,7 +8,33 @@ manipulate and flatten definition Objects that include one or more variations
 
 ## What is this?
 
-__coming soon__
+This project provides helper functions for consuming a definition and extracting
+a specific variation out of one or more possible configurations.
+
+### What is a "configuration"?
+
+A configuration is just an Object with properties and values, where that
+specific combination of properties and values relates to specific purpose.
+
+### What is a "variation"?
+
+A variation is a named configuration, i.e. different in some ways and similar in
+other ways to another configuration.
+
+### What is a "definition"?
+
+A definition is an Object with properties that are variations. There must be a
+variation named "default". Other variations within the same definition may then
+specify how they differ from the default.
+
+The goal is to save transmission and storage size by putting common values in
+the default variation, and just the differences in the other variations.
+
+For low-level validation, see the
+[JSON Schema specification](http://json-schema.org/) and our JSON
+[schema](docs/schema.json).
+
+See the [docs](docs) directory for more details.
 
 
 ## API
