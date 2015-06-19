@@ -59,7 +59,9 @@ test('flattening', function (t) {
       ]
     }
   };
-  flat = variedDefinition.flatten(def);
+  flat = variedDefinition.flatten(def, null, {
+    nesting: ['_elements']
+  });
 
   t.test('output is an Object', function (tt) {
     tt.isObject(flat);
@@ -128,7 +130,10 @@ test('flattening with variations', function (t) {
       ]
     }
   };
-  flat = variedDefinition.flatten(def, 'add');
+  flat = variedDefinition.flatten(def, 'add', {
+    nesting: ['_elements'],
+    selection: ['_elements']
+  });
 
   t.test('output is an Object', function (tt) {
     tt.isObject(flat);

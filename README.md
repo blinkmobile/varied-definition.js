@@ -42,4 +42,19 @@ See the [docs](docs) directory for more details.
 
 ## API
 
-__coming soon__
+This module exports an Object with the following function(s) ...
+
+### `flatten()`
+
+- @param {Object} def a definition with a default and zero or more variations
+- @param {String} [variation] the specific variation desired
+- @param {FlattenOptions} [options] other parameters
+- @throws {TypeError} if the definition doesn't meet our above requirements
+- @return {Object} configuration for a single variation
+
+#### @typedef FlattenOptions
+- @type {Object}
+- @property {String[]} [nesting] properties within the default configuration
+- @property {String[]} [selection] properties within other configurations
+
+See our documentation on [nesting configurations](docs/nested-definitions.md).

@@ -57,20 +57,11 @@ function sortAndFilterByName (objects, names) {
 }
 
 /**
- * @public
- * @param {Object} def original definition with multiple variations
- * @param {String} variation the specific variation desired
- * @return {Object} definition for a single variation
- */
-function flattenDefinition (def, variation) {
-  function flattenComponents (d) {
-    var attrs = d['default'] || {};
-    if (variation && d[variation]) {
-      extend(attrs, d[variation]);
-    }
-    return attrs;
-  }
-
+@private
+@param {Object} def to test for type errors
+@throws {TypeError}
+*/
+function typecheck (def) {
   if (!def || typeof def !== 'object') {
     throw new TypeError('1st argument should be an Object');
   }
@@ -80,19 +71,69 @@ function flattenDefinition (def, variation) {
   if (!def['default'].name || typeof def['default'].name !== 'string') {
     throw new TypeError('"default" Object is missing the "name" String');
   }
+}
+
+/**
+@private
+@param {Array} array to test and return
+@returns {Array} either the original or a new Object if obj was invalid
+*/
+function ensureArray (array) {
+  if (Array.isArray(array)) {
+    return array;
+  }
+  return [];
+}
+
+/**
+@private
+@param {Object} obj to test and return
+@returns {Object} either the original or a new Object if obj was invalid
+*/
+function ensureObject (obj) {
+  if (!obj || typeof obj !== 'object') {
+    return {};
+  }
+  return obj;
+}
+
+/**
+@typedef FlattenOptions
+@type {Object}
+@property {String[]} [nesting] properties within the default configuration
+@property {String[]} [selection] properties within other configurations
+*/
+
+/**
+ * @public
+ * @param {Object} def original definition with multiple variations
+ * @param {String} [variation] the specific variation desired
+ * @param {FlattenOptions} [options] additional parameters
+ * @return {Object} definition for a single variation
+ */
+function flattenDefinition (def, variation, options) {
+  var nesting;
+  var selection;
+
+  function flattenComponents (d) {
+    var attrs = d['default'] || {};
+    if (variation && d[variation]) {
+      extend(attrs, d[variation]);
+    }
+    return attrs;
+  }
+
+  typecheck(def);
+
+  options = ensureObject(options);
+  nesting = ensureArray(options.nesting);
+  selection = ensureArray(options.selection);
 
   // clone the definition object first, for safety
   def = clone(def);
 
-  // found definition, but need to collapse to specific variation/view
-  [
-  '_elements',
-  '_sections',
-  '_pages',
-  '_behaviours',
-  '_checks',
-  '_actions'
-  ].forEach(function (components) {
+  // found definition, but need to collapse nested definitions
+  nesting.forEach(function (components) {
     if (Array.isArray(def['default'][components])) {
       def['default'][components] = def['default'][components].map(flattenComponents);
     }
@@ -103,15 +144,18 @@ function flattenDefinition (def, variation) {
     return def['default'];
   }
 
-  /*eslint-disable no-underscore-dangle*/ // "_elements" is part of our spec
   if (def[variation]) {
-    if (Array.isArray(def[variation]._elements)) {
-      def['default']._elements = sortAndFilterByName(def['default']._elements, def[variation]._elements);
-      delete def[variation]._elements;
-    }
+    selection.forEach(function (select) {
+      if (Array.isArray(def[variation][select])) {
+        def['default'][select] = sortAndFilterByName(
+          def['default'][select],
+          def[variation][select]
+        );
+        delete def[variation][select];
+      }
+    });
     extend(def['default'], def[variation]);
   }
-  /*eslint-enable no-underscore-dangle*/
 
   return def['default'];
 }
