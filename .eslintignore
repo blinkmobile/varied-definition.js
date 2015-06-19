@@ -1,0 +1,6 @@
+# foreign files
+node_modules
+
+# output files
+coverage
+dist

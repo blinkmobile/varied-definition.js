@@ -1,0 +1,41 @@
+{
+  "name": "@blinkmobile/varied-definition",
+  "version": "1.0.0",
+  "description": "manipulate and flatten definition Objects that include one or more variations",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify -s variedDefinition -e . -o dist/index.js",
+    "pretest": "npm run build",
+    "test": "eslint . && istanbul cover test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blinkmobile/varied-definition.js.git"
+  },
+  "keywords": [
+    "object",
+    "definition",
+    "flatten"
+  ],
+  "author": "Ron Waldon (https://github.com/jokeyrhyme)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/blinkmobile/varied-definition.js/issues"
+  },
+  "homepage": "https://github.com/blinkmobile/varied-definition.js#readme",
+  "devDependencies": {
+    "browserify": "^10.2",
+    "eslint": "^0.23.0",
+    "eslint-config-semistandard": "^4.0",
+    "eslint-config-standard": "^3.3",
+    "istanbul": "^0.3.15",
+    "tape": "^4.0",
+    "tape-chai": "^1.1"
+  },
+  "files": [
+    "dist/index.js",
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ]
+}
