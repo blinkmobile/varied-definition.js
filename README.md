@@ -27,6 +27,9 @@ A definition is an Object with properties that are variations. There must be a
 variation named "default". Other variations within the same definition may then
 specify how they differ from the default.
 
+The default configuration Object must have a "name" property. Declaring a
+variation that changes the "name" property is not recommended.
+
 The goal is to save transmission and storage size by putting common values in
 the default variation, and just the differences in the other variations.
 
