@@ -25,9 +25,10 @@
   "homepage": "https://github.com/blinkmobile/varied-definition.js#readme",
   "devDependencies": {
     "browserify": "^10.2",
-    "eslint": "^0.23.0",
-    "eslint-config-semistandard": "^4.0",
-    "eslint-config-standard": "^3.3",
+    "eslint": "^1.0",
+    "eslint-config-semistandard": "^5.0.0",
+    "eslint-config-standard": "^4.0.0",
+    "eslint-plugin-standard": "^1.2.0",
     "istanbul": "^0.3.15",
     "tape": "^4.0",
     "tape-chai": "^1.1"

@@ -13,16 +13,13 @@ var variedDefinition = require('..');
 require('tape-chai');
 
 test('variedDefinition', function (t) {
-
   t.test('is an Object', function (tt) {
     tt.isObject(variedDefinition);
     tt.end();
   });
-
 });
 
 test('variedDefinition.flatten', function (t) {
-
   t.test('flattenDefinition is a function', function (tt) {
     tt.isFunction(variedDefinition.flatten);
     tt.end();
@@ -229,7 +226,7 @@ test('precedence', function (t) {
 });
 
 test('source is treated as immutable', function (t) {
-  var def, flat, check;
+  var def, check;
 
   def = {
     'default': {
@@ -272,7 +269,7 @@ test('source is treated as immutable', function (t) {
 
   check = JSON.stringify(def);
 
-  flat = variedDefinition.flatten(def, 'add', {
+  variedDefinition.flatten(def, 'add', {
     nesting: ['_elements'],
     selection: ['_elements']
   });

@@ -8,7 +8,7 @@
 * @param {Object} target the object to which properties will be added
 * @param {Object} source the object from which properties will be copied
 * @param {string} omit Names of fields to be ommited.
-* 
+*
 * @returns {Object} target
 */
 function extend (target, source, omit) {
@@ -21,7 +21,7 @@ function extend (target, source, omit) {
   Object.keys(source).forEach(function (prop) {
     var value = source[prop];
 
-    if (omit && omit.indexOf(prop) > -1 ) {
+    if (omit && omit.indexOf(prop) > -1) {
       return;
     }
 
