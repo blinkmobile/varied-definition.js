@@ -227,3 +227,61 @@ test('precedence', function (t) {
 
   t.end();
 });
+
+test('precedence', function (t) {
+  var def, flat, check;
+
+  def = {
+    'default': {
+      name: 'my-form',
+      _elements: [
+        {
+          'default': {
+            name: 'element-1'
+          },
+          add: {
+            label: 'Element 1'
+          }
+        },
+        {
+          'default': {
+            name: 'element-2'
+          },
+          edit: {
+            label: 'Element 2'
+          }
+        },
+        {
+          'default': {
+            name: 'element-3'
+          },
+          list: {
+            label: 'Element 3'
+          }
+        }
+      ]
+    },
+    add: {
+      label: 'My Form',
+      _elements: [
+        'element-2',
+        'element-1'
+      ]
+    }
+  };
+
+  check = JSON.stringify(def);
+
+  flat = variedDefinition.flatten(def, 'add', {
+    nesting: ['_elements'],
+    selection: ['_elements']
+  });
+
+  // verify that no changes have been made to the definition object
+  t.test(function (tt) {
+    tt.equal(check, JSON.stringify(def));
+    tt.end();
+  });
+
+  t.end();
+});

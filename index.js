@@ -1,18 +1,16 @@
 'use strict';
 
-// foreign modules
-
-var clone = require('cyclonejs').clone;
-
 // this module
 
 /**
 * @private
 * @param {Object} target the object to which properties will be added
 * @param {Object} source the object from which properties will be copied
+* @param {string} omit Names of fields to be ommited.
+* 
 * @returns {Object} target
 */
-function extend (target, source) {
+function extend (target, source, omit) {
   if (!target || typeof target !== 'object') {
     throw new TypeError('1st argument must be an Object');
   }
@@ -21,6 +19,11 @@ function extend (target, source) {
   }
   Object.keys(source).forEach(function (prop) {
     var value = source[prop];
+
+    if (omit && omit.indexOf(prop) > -1 ) {
+      return;
+    }
+
     if (typeof value === 'string') {
       if (value) {
         target[prop] = value.trim();
@@ -114,12 +117,14 @@ function ensureObject (obj) {
 function flattenDefinition (def, variation, options) {
   var nesting;
   var selection;
+  var result = extend({}, def['default']);
 
   function flattenComponents (d) {
-    var attrs = d['default'] || {};
+    var attrs = extend({}, d['default'] || {});
     if (variation && d[variation]) {
       extend(attrs, d[variation]);
     }
+
     return attrs;
   }
 
@@ -129,35 +134,31 @@ function flattenDefinition (def, variation, options) {
   nesting = ensureArray(options.nesting);
   selection = ensureArray(options.selection);
 
-  // clone the definition object first, for safety
-  def = clone(def);
-
   // found definition, but need to collapse nested definitions
   nesting.forEach(function (components) {
     if (Array.isArray(def['default'][components])) {
-      def['default'][components] = def['default'][components].map(flattenComponents);
+      result[components] = def['default'][components].map(flattenComponents);
     }
   });
 
   if (!variation) {
     // no further merging required
-    return def['default'];
+    return result;
   }
 
   if (def[variation]) {
     selection.forEach(function (select) {
       if (Array.isArray(def[variation][select])) {
-        def['default'][select] = sortAndFilterByName(
-          def['default'][select],
+        result[select] = sortAndFilterByName(
+          result[select],
           def[variation][select]
         );
-        delete def[variation][select];
       }
     });
-    extend(def['default'], def[variation]);
+    extend(result, def[variation], selection);
   }
 
-  return def['default'];
+  return result;
 }
 
 module.exports = {
