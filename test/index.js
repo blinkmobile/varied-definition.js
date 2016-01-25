@@ -228,7 +228,7 @@ test('precedence', function (t) {
   t.end();
 });
 
-test('precedence', function (t) {
+test('source is treated as immutable', function (t) {
   var def, flat, check;
 
   def = {
