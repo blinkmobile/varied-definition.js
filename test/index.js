@@ -13,16 +13,13 @@ var variedDefinition = require('..');
 require('tape-chai');
 
 test('variedDefinition', function (t) {
-
   t.test('is an Object', function (tt) {
     tt.isObject(variedDefinition);
     tt.end();
   });
-
 });
 
 test('variedDefinition.flatten', function (t) {
-
   t.test('flattenDefinition is a function', function (tt) {
     tt.isFunction(variedDefinition.flatten);
     tt.end();
@@ -222,6 +219,64 @@ test('precedence', function (t) {
     tt.property(flat, 'number');
     tt.isNumber(flat.number);
     tt.equal(flat.number, def['default'].number);
+    tt.end();
+  });
+
+  t.end();
+});
+
+test('source is treated as immutable', function (t) {
+  var def, check;
+
+  def = {
+    'default': {
+      name: 'my-form',
+      _elements: [
+        {
+          'default': {
+            name: 'element-1'
+          },
+          add: {
+            label: 'Element 1'
+          }
+        },
+        {
+          'default': {
+            name: 'element-2'
+          },
+          edit: {
+            label: 'Element 2'
+          }
+        },
+        {
+          'default': {
+            name: 'element-3'
+          },
+          list: {
+            label: 'Element 3'
+          }
+        }
+      ]
+    },
+    add: {
+      label: 'My Form',
+      _elements: [
+        'element-2',
+        'element-1'
+      ]
+    }
+  };
+
+  check = JSON.stringify(def);
+
+  variedDefinition.flatten(def, 'add', {
+    nesting: ['_elements'],
+    selection: ['_elements']
+  });
+
+  // verify that no changes have been made to the definition object
+  t.test(function (tt) {
+    tt.equal(check, JSON.stringify(def));
     tt.end();
   });
 
