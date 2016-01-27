@@ -1,6 +1,6 @@
 {
   "name": "@blinkmobile/varied-definition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "manipulate and flatten definition Objects that include one or more variations",
   "main": "index.js",
   "scripts": {
